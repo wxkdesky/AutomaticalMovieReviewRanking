@@ -39,9 +39,12 @@ Files below are generated in the dir `./Data`
 * `tf_idf.pkl` tf_idf of each word in every document is kept in this file
 * `sorted_tf_idf.pkl` sort each word in v=every document by the value of `tf_idf`
 * `word_vec_feature.pkl` word vector of each word in every document.`This file is large`
+
 ## Train,BuildModel
 It aims to split data into training/testing and build input features for any testing samples and then do `self-training`
+
 Files below are requested in the dir `./Data`
+
 `Specially, this package needs some extra files which are listed below:`
 
 ### Files It depends on before running
@@ -49,6 +52,7 @@ Files below are requested in the dir `./Data`
 * `story.txt`
 * `picture.txt`
 * `emotion.txt`
+
 Files mentioned above are training lables for each class. Each line is 0 or 1 for one sample.
 Files below are generated in the root dir `./`
 
@@ -57,11 +61,14 @@ Files below are generated in the root dir `./`
 * `story.model`
 * `picture.model`
 * `emotion.model`
+
 Models mentioned above is four different kinds of classifiers. The classification method is `LR with L2 penalty`.
+
 `BuildModel` is just a wrapper of `Train`
----------------------------------------------
+
 ## Classification
 It aims to predict testing samples.
+
 `Specially, this package needs some extra files which are listed below:`
 
 ### Files It depends on before running
@@ -70,10 +77,12 @@ It aims to predict testing samples.
 * `picture.model`
 * `emotion.model`
 Yes, it needs to load well trained models.
----------------------------------------------
+
 ## VisualizeResult
 It aims to visualize prediction results using Precise/Recall/F1-Score
+
 Files below are requested in the dir `./Data`
+
 `Specially, this package needs some extra files which are listed below:`
 
 ### Files It depends on before running
@@ -81,6 +90,7 @@ Files below are requested in the dir `./Data`
 * `story_test_lable.txt`
 * `picture_test_lable.txt`
 * `emotion_test_lable.txt`
+
 Files mentioned above are lables of testing samples.
 
 
