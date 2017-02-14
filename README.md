@@ -25,7 +25,7 @@ It is a crawler to fetch movie reviews from imdb
 
 ### Files It creates during running
 ---------------------------------------------
-csv files in the dir `./PrepareDataset/dataset`. Each csv file is named by the corresponding movie title
+* csv files in the dir `./PrepareDataset/dataset`. Each csv file is named by the corresponding movie title
 
 ---------------------------------------------
 ## ParseCSV
@@ -39,7 +39,6 @@ Files below are generated in the dir `./Data`
 * `tf_idf.pkl` tf_idf of each word in every document is kept in this file
 * `sorted_tf_idf.pkl` sort each word in v=every document by the value of `tf_idf`
 * `word_vec_feature.pkl` word vector of each word in every document.`This file is large`
----------------------------------------------
 ## Train,BuildModel
 It aims to split data into training/testing and build input features for any testing samples and then do `self-training`
 Files below are requested in the dir `./Data`
