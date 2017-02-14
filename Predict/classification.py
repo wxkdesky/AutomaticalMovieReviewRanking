@@ -1,0 +1,84 @@
+# @Wishcome  2017 
+# Reach the author by Email:wxkdesky@hotmail.com
+# class Classification aims to predict test samples
+# class VisualizeResult aims to give the classification report
+
+# -*- coding:utf-8 -*-
+from sklearn.externals import joblib
+from Training.train import BuildModel
+from Training.train import Train
+from PrepareDataset.readcsv import ParseCSV
+from sklearn import metrics
+import numpy as np
+import re
+
+
+class Classification:
+    model=[]
+    suffix='.model'
+    predict_result_proba=[]
+    predict_result_lable=[]
+    def __init__(self):
+        try:
+            for item in BuildModel.model_name:
+                self.model.append(joblib.load(item+self.suffix)) 
+        except:
+            self.model=[]
+            print('loading model falied!')
+
+    def Predict(self,sample):
+        if self.model==[]:
+            print('No trained model found!')
+            return
+        else:
+            for item in self.model:
+                self.predict_result_proba.append(item.predict_proba(sample))
+                self.predict_result_lable.append(item.predict(sample))
+
+class VisualizeResult:
+    test_data_lable=[]
+    test_lable_name=['people_test_lable.txt','story_test_lable.txt','emotion_test_lable.txt']
+    test_data=[]
+    test_data_path='test_data.txt'
+    def __init__(self):
+        try:
+            for item in self.test_lable_name:
+                tmp=ParseCSV.load_file(item)
+                if tmp!=None:
+                    self.test_data_lable.append(tmp)
+                else:
+                    raise Exception('error')           
+        except:
+            self.test_data_lable=[]
+            print('loading test data lable failed!')
+    
+    def build_test_data(self):
+        raw_data=[]
+        raw_data=ParseCSV.load_file(self.test_data_path,parse=False)
+        if raw_data==[]:
+            print('loading test data falied!Stop build_test_data()...')
+            return False
+        processed_data=[]
+        for item in raw_data:
+            processed_data.append(ParseCSV.tokenize(raw_data))
+        tf_idf=ParseCSV.feature_extraction_ex(processed_data)
+        feature_matrix=Train.build_test_data(tf_idf)
+        self.test_data=feature_matrix
+        return True
+
+    def set_default_test_data(self,default_data):
+        self.test_data=default_data
+
+    def visualize(self):
+        if self.test_data==[]:
+            print('please specify test_data!')
+            return
+        pat=re.compile(r'_.*')
+        cls_model=Classification()
+        if cls_model.model!=[]:
+            cls_model.Predict(self.test_data)
+        for i in range(len(cls_model.model)):
+            print('Model:'+pat.sub('',self.test_lable_name[i]))
+            print(metrics.classification_report(self.test_data_lable[i],cls_model.predict_result_lable[i]))
+
+
