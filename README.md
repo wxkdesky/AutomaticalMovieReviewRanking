@@ -54,6 +54,7 @@ Files below are requested in the dir `./Data`
 * `emotion.txt`
 
 Files mentioned above are training lables for each class. Each line is 0 or 1 for one sample.
+
 Files below are generated in the root dir `./`
 
 ### Files It creates during running
@@ -76,6 +77,7 @@ It aims to predict testing samples.
 * `story.model`
 * `picture.model`
 * `emotion.model`
+
 Yes, it needs to load well trained models.
 
 ## VisualizeResult
