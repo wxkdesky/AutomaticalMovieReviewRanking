@@ -24,7 +24,7 @@ All the packages in the project are described below
 It is a crawler to fetch movie reviews from imdb
 
 ### Files It creates during running
----------------------------------------------
+
 * csv files in the dir `./PrepareDataset/dataset`. Each csv file is named by the corresponding movie title
 ---------------------------------------------
 ## ParseCSV
