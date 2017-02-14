@@ -11,10 +11,15 @@ All the code of this project are written in Python3.4
 
 # Usage
 The entrance is `here_we_go.py`. This file accepts 1 argument atmost. The argument provided by user is to specify the dir in which the movie review files are placed.
+
 If the Prerequisite above are satisfied, please run in your terminal`(cmd in windows and terminal in linux/unix)`
+
 `python here_we_go.py`
+
 else do
+
 `python here_we_go.py your_dataset_dir`
+
 Then the system will run to the end.
 
 # Package Instruction
