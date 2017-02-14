@@ -43,7 +43,7 @@ Files below are generated in the dir `./Data`
 * `vocab.pkl` vocabulary made after searching the whole dataset
 * `doc_freq.pkl` frequency of each word in every document is kept in this file
 * `tf_idf.pkl` tf_idf of each word in every document is kept in this file
-* `sorted_tf_idf.pkl` sort each word in v=every document by the value of `tf_idf`
+* `sorted_tf_idf.pkl` sort each word in every document by the value of `tf_idf`
 * `word_vec_feature.pkl` word vector of each word in every document.`This file is large`
 
 ## Train,BuildModel
