@@ -101,6 +101,13 @@ Files below are requested in the dir `./Data`
 
 Files mentioned above are lables of testing samples.
 
+#Customization
+
+Want to test arbitrary samples? Follow the steps below:
+
+* place your testing document in the dir `./Data`. Name it `test_data.txt`. Each line is a sample.
+* Look deep into class VisualizeResult. The function build_test_data() will help to transform raw testing samples to features that model can recognize. Then call visualize().
+
 
 If met with any problem, please contact me:`wxkdesky@hotmail.com`
 Good luck!
