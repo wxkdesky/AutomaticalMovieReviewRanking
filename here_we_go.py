@@ -12,6 +12,7 @@ from Training.train import BuildModel
 from Predict.classification import VisualizeResult
 import sys
 data_is_fetched=True
+train=False
 
 if __name__=='__main__':
     if not data_is_fetched:
@@ -31,8 +32,9 @@ if __name__=='__main__':
     pcsv.tf_idf()
     pcsv.sort_tf_idf()
     pcsv.feature_extraction()
-    bm=BuildModel()
-    bm.build_models()
+    if train:
+        bm=BuildModel()
+        bm.build_models()
     sd=BuildModel.get_split_data()
     vr=VisualizeResult()
     vr.set_default_test_data(sd.test)
