@@ -20,7 +20,7 @@ else do
 
 `python here_we_go.py your_dataset_dir`
 
-Then the system will run to the end.
+Then the system will run to the end. And in default, models are assumed to be trained already, e.g.,`train=False`
 
 # Package Instruction
 ---------------------------------------------
