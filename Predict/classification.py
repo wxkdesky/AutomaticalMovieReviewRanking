@@ -37,7 +37,7 @@ class Classification:
 
 class VisualizeResult:
     test_data_lable=[]
-    test_lable_name=['people_test_lable.txt','story_test_lable.txt','picture_test_lable','emotion_test_lable.txt']
+    test_lable_name=['people_test_lable.txt','story_test_lable.txt','picture_test_lable.txt','emotion_test_lable.txt']
     test_data=[]
     test_data_path='test_data.txt'
     def __init__(self):
