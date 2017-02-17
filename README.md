@@ -87,7 +87,7 @@ It aims to predict testing samples.
 Yes, it needs to load well trained models.
 
 ## VisualizeResult
-It aims to visualize prediction results using Precise/Recall/F1-Score
+It aims to visualize prediction results using Precise/Recall/F1-Score and Fusion Matrix
 
 Files below are requested in the dir `./Data`
 

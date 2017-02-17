@@ -29,6 +29,10 @@ class Train:
     def __init__(self,classifier_name):
         self.cls_name=classifier_name
         self.lable_name=classifier_name+'.txt'
+        self.labled=[]
+        self.labled_lable=[]
+        self.unlabled=[]
+        self.test=[]
 
     def split_data(self,lable=100,unlable=18862,test=0):
         feature_matrix=[]
@@ -55,6 +59,57 @@ class Train:
             self.test=feature_matrix[lable+unlable:]
         else:
             self.test=feature_matrix[lable+unlable:lable+unlable+test]
+        self.labled_lable=[]
+        print('split data finished...')
+        return True
+    
+
+    def split_data_ex(self,lable=[[0,6],[6,40],[135,152],[840,844],[1440,1449],[1562,1592]],unlable=18862,test=0):
+        feature_matrix=[]
+        raw_feature=ParseCSV.load_pickle_data(ParseCSV.word_vec_doc_pickle)
+        if raw_feature==None:
+            return False      
+        length=len(raw_feature[0][0][1])  
+        max_v=0
+        for doc in raw_feature:
+            tmp=[]
+            tmp=np.array([0 for i in range(length)])
+            for word in doc:
+                tmp=tmp+word[1]
+            # tmp=tmp/np.linalg.norm(tmp)
+            i_max=np.max(np.abs(tmp))
+            if i_max>max_v:
+                max_v=i_max
+            feature_matrix.append(tmp)
+        feature_matrix=feature_matrix/max_v
+        feature_matrix=feature_matrix.tolist()
+        for item in lable:
+            for i in range(item[0],item[1]):
+                self.labled.append(feature_matrix[i])
+                feature_matrix[i]=[]
+        ind=0
+        for i in range(len(feature_matrix)):
+            if ind <unlable:
+                if feature_matrix[i]!=[]:
+                    self.unlabled.append(feature_matrix[i])
+                    feature_matrix[i]=[]
+                    ind+=1
+        if test==0:
+            for j in range(len(feature_matrix)):
+                if feature_matrix[j]!=[]:
+                    self.test.append(feature_matrix[j])
+                    feature_matrix[j]=[]
+        else:
+            if test<=len(feature_matrix)-len(self.labled)-len(self.unlabled):
+                ind1=0
+                for j in range(len(feature_matrix)):
+                    if ind1<test:
+                        if feature_matrix[j]!=[]:
+                            self.test.append(feature_matrix[i])
+                            feature_matrix[j]=[]
+                            ind1+=1
+            else:
+                return False
         self.labled_lable=[]
         print('split data finished...')
         return True
@@ -119,7 +174,7 @@ class Train:
         print(self.cls_name+'.model has been successfully dumped!') 
     
     def train(self):
-        if self.split_data()==True:    
+        if self.split_data_ex()==True:    
             if self.load_labled_lable()==True:
                 self.__self_training()
 
@@ -138,6 +193,6 @@ class BuildModel:
     @classmethod
     def get_split_data(self):
         sd=Train('people')
-        sd.split_data()
+        sd.split_data_ex()
         return sd
 

@@ -37,7 +37,7 @@ class Classification:
 
 class VisualizeResult:
     test_data_lable=[]
-    test_lable_name=['people_test_lable.txt','story_test_lable.txt','emotion_test_lable.txt']
+    test_lable_name=['people_test_lable.txt','story_test_lable.txt','picture_test_lable','emotion_test_lable.txt']
     test_data=[]
     test_data_path='test_data.txt'
     def __init__(self):
@@ -68,6 +68,48 @@ class VisualizeResult:
 
     def set_default_test_data(self,default_data):
         self.test_data=default_data
+    
+    @classmethod
+    def split_lables(cls,file,train=False):
+        test_data_lable=[]
+        try:
+            people_lable=[]
+            story_lable=[]
+            picture_lable=[]
+            emotion_lable=[]
+            for line in open(file,'r',encoding='utf-8'):
+                people,story,picture,emotion=map(int,line.split(','))
+                people_lable.append(people)
+                story_lable.append(story)
+                picture_lable.append(picture)
+                emotion_lable.append(emotion)
+            test_data_lable.append(people_lable)
+            test_data_lable.append(story_lable)
+            test_data_lable.append(picture_lable)
+            test_data_lable.append(emotion_lable)
+        except:
+            print('loading lable file ['+file+'] failed!')
+            return []
+        if train:
+            for item in range(len(test_data_lable)):
+                path=''
+                if item==0:
+                    path='./Data/people.txt'
+                elif item==1:
+                    path='./Data/story.txt'
+                elif item==2:
+                    path='./Data/picture.txt'
+                elif item==3:
+                    path='./Data/emotion.txt'
+                f=open(path,'w',encoding='utf-8')
+                length=len(test_data_lable[item])
+                for i in range(length):
+                    if i<length-1:
+                        f.write(str(test_data_lable[item][i])+'\n')
+                    else:
+                        f.write(str(test_data_lable[item][i]))
+                f.close()
+        return test_data_lable
 
     def visualize(self):
         if self.test_data==[]:
@@ -80,5 +122,6 @@ class VisualizeResult:
         for i in range(len(cls_model.model)):
             print('Model:'+pat.sub('',self.test_lable_name[i]))
             print(metrics.classification_report(self.test_data_lable[i],cls_model.predict_result_lable[i]))
+            print(metrics.confusion_matrix(self.test_data_lable[i],cls_model.predict_result_lable[i]))
 
 
