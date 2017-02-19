@@ -18,7 +18,12 @@ class Classification:
     suffix='.model'
     predict_result_proba=[]
     predict_result_lable=[]
+    raw_data=[]
     def __init__(self):
+        self.raw_data=[]
+        self.model=[]
+        self.predict_result_lable=[]
+        self.predict_result_proba=[]
         try:
             for item in BuildModel.model_name:
                 self.model.append(joblib.load(item+self.suffix)) 
@@ -53,14 +58,14 @@ class VisualizeResult:
             print('loading test data lable failed!')
     
     def build_test_data(self):
-        raw_data=[]
-        raw_data=ParseCSV.load_file(self.test_data_path,parse=False)
+        # raw_data=[]
+        self.raw_data=ParseCSV.load_file(self.test_data_path,parse=False)
         if raw_data==[]:
             print('loading test data falied!Stop build_test_data()...')
             return False
         processed_data=[]
-        for item in raw_data:
-            processed_data.append(ParseCSV.tokenize(raw_data))
+        for item in self.raw_data:
+            processed_data.append(ParseCSV.tokenize(self.raw_data))
         tf_idf=ParseCSV.feature_extraction_ex(processed_data)
         feature_matrix=Train.build_test_data(tf_idf)
         self.test_data=feature_matrix
@@ -123,5 +128,14 @@ class VisualizeResult:
             print('Model:'+pat.sub('',self.test_lable_name[i]))
             print(metrics.classification_report(self.test_data_lable[i],cls_model.predict_result_lable[i]))
             print(metrics.confusion_matrix(self.test_data_lable[i],cls_model.predict_result_lable[i]))
-
+        print('Now we see the ranking for each movie review...\nMovie Review(No.)   Ranking(People)  Ranking(Story)  Ranking(Picture)  Ranking(Emotion)')
+        rank=[]
+        sample_length=len(self.test_data)
+        for item in cls_model.predict_result_proba:
+            tmp=[]
+            for item2 in item.tolist():
+                tmp.append(int(item2[1]*10))
+            rank.append(tmp)
+        for i in range(sample_length):
+            print('%d                 %d                 %d                 %d                 %d'%(i,rank[0][i],rank[1][i],rank[2][i],rank[3][i]))
 
