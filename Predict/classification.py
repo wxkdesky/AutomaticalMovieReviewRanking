@@ -44,8 +44,9 @@ class VisualizeResult:
     test_data_lable=[]
     test_lable_name=['people_test_lable.txt','story_test_lable.txt','picture_test_lable.txt','emotion_test_lable.txt']
     test_data=[]
-    test_data_path='test_data.txt'
+    test_data_path='test_data.txt'   
     def __init__(self):
+        self.raw_data=[]       
         try:
             for item in self.test_lable_name:
                 tmp=ParseCSV.load_file(item)
@@ -60,12 +61,12 @@ class VisualizeResult:
     def build_test_data(self):
         # raw_data=[]
         self.raw_data=ParseCSV.load_file(self.test_data_path,parse=False)
-        if raw_data==[]:
+        if self.raw_data==[]:
             print('loading test data falied!Stop build_test_data()...')
             return False
         processed_data=[]
         for item in self.raw_data:
-            processed_data.append(ParseCSV.tokenize(self.raw_data))
+            processed_data.append(ParseCSV.tokenize(item))
         tf_idf=ParseCSV.feature_extraction_ex(processed_data)
         feature_matrix=Train.build_test_data(tf_idf)
         self.test_data=feature_matrix
@@ -75,7 +76,7 @@ class VisualizeResult:
         self.test_data=default_data
     
     @classmethod
-    def split_lables(cls,file,train=False):
+    def split_lables(cls,file='./Data/test_lable.txt',train=False):
         test_data_lable=[]
         try:
             people_lable=[]
@@ -116,7 +117,7 @@ class VisualizeResult:
                 f.close()
         return test_data_lable
 
-    def visualize(self):
+    def visualize(self,show_metrics=True):
         if self.test_data==[]:
             print('please specify test_data!')
             return
@@ -124,10 +125,11 @@ class VisualizeResult:
         cls_model=Classification()
         if cls_model.model!=[]:
             cls_model.Predict(self.test_data)
-        for i in range(len(cls_model.model)):
-            print('Model:'+pat.sub('',self.test_lable_name[i]))
-            print(metrics.classification_report(self.test_data_lable[i],cls_model.predict_result_lable[i]))
-            print(metrics.confusion_matrix(self.test_data_lable[i],cls_model.predict_result_lable[i]))
+        if show_metrics:
+            for i in range(len(cls_model.model)):
+                print('Model:'+pat.sub('',self.test_lable_name[i]))
+                print(metrics.classification_report(self.test_data_lable[i],cls_model.predict_result_lable[i]))
+                print(metrics.confusion_matrix(self.test_data_lable[i],cls_model.predict_result_lable[i]))
         print('Now we see the ranking for each movie review...\nMovie Review(No.)   Ranking(People)  Ranking(Story)  Ranking(Picture)  Ranking(Emotion)')
         rank=[]
         sample_length=len(self.test_data)

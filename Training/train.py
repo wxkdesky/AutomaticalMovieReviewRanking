@@ -117,6 +117,7 @@ class Train:
     @classmethod
     def build_test_data(self,tf_idf):
         feature_matrix=[]
+        length=len(tf_idf[0][0][1])
         max_v=0
         for doc in tf_idf:
             tmp=[]

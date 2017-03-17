@@ -77,7 +77,7 @@ class ParseCSV:
     @classmethod
     # remove stop_words and tokenize
     def tokenize(self,msg):
-        punc_include=nltk.word_tokenize(msg)
+        punc_include=nltk.word_tokenize(str(msg).lower())
         punc_exclude=[]
         for i in range(len(punc_include)):
             if punc_include[i] not in string.punctuation and punc_include[i] not in self.stop_words:
@@ -225,6 +225,7 @@ class ParseCSV:
         document=[]
         tf_idf_by_doc=[]
         length=0
+        cnt=0
         for item in raw_data_out:
             cnt+=1
             print('organizing '+str(cnt)+' document......')
@@ -241,8 +242,8 @@ class ParseCSV:
             tmp=[]
             for key in list(doc.keys()):
                 fw=doc[key]
-                n=self.vacab_cnt
-                N=self.vacab[key]
+                n=length
+                N=vacab[key]
                 tf_idf=fw*(np.log10(n/N)+1)
                 tmp.append((key,tf_idf))
             tf_idf_by_doc.append(tmp)
@@ -251,4 +252,16 @@ class ParseCSV:
         for item in tf_idf_by_doc:
             tmp=sorted(item,key=lambda x_tuple:x_tuple[1],reverse=True)
             new_tf_idf.append(tmp) 
-        return new_tf_idf
+        model=gensim.models.Word2Vec.load_word2vec_format('wordvectors.bin',binary=True)
+        all_vocab=list(model.vocab.keys())
+        all_data_vocab=list(vacab.keys())
+        print('begin to process word_vector...')
+        word_vec_doc=[]
+        for doc in new_tf_idf:
+            tmp=[]
+            for word in doc:
+                if word[0] in all_vocab:
+                    tmp.append((word[0],word[1]*np.array(model[word[0]])))
+            word_vec_doc.append(tmp)
+        print('finish processing word_vector...')
+        return word_vec_doc
